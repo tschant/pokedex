@@ -1,32 +1,13 @@
 'use client';
-import { NamedAPIResourceList, PokemonClient } from 'pokenode-ts';
-import PokemonDisplay from '@/components/PokemonDisplay';
-import { useQuery } from '@tanstack/react-query';
+import SimpleDisplay from '@/components/SimpleDisplay';
 import { useRouter } from 'next/navigation';
 import Pagination from '@/components/Pagination';
-
-async function getPokemonList({
-	page,
-	pageSize,
-}: {
-	page: number;
-	pageSize: number;
-}) {
-	const api = new PokemonClient();
-	return (await api.listPokemons(
-		page * pageSize,
-		pageSize,
-	)) as NamedAPIResourceList;
-}
+import { useGetPokemonList } from '@/utils/PokemonListAdapter';
 
 export default function PokemonList({ page }: { page: number }) {
 	const router = useRouter();
-	const pageSize: number = 50;
-	const { data } = useQuery({
-		queryKey: ['getPokemonList', page, pageSize],
-		queryFn: () => getPokemonList({ page: page - 1, pageSize }),
-		suspense: true,
-	});
+	const pageSize: number = 25;
+	const { data } = useGetPokemonList(page, pageSize);
 
 	const totalPages =
 		data?.count && data?.count >= 0 ? Math.ceil(data?.count / pageSize) : 1;
@@ -41,10 +22,16 @@ export default function PokemonList({ page }: { page: number }) {
 			<>
 				<div className={'xs:grid-cols-1 grid sm:grid-cols-2 md:grid-cols-5'}>
 					{data.results.map(({ name }: { name: string }) => (
-						<PokemonDisplay pokemon={name} key={name} />
+						<SimpleDisplay pokemon={name} key={name} />
 					))}
 				</div>
-				<Pagination currentPage={page} totalPages={totalPages} />
+				<div className={'mt-5'}>
+					<Pagination
+						currentPage={page}
+						totalPages={totalPages}
+						maxToDisplay={4}
+					/>
+				</div>
 			</>
 		);
 	}
