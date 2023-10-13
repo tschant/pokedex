@@ -22,6 +22,7 @@
 
 ## TO-DO 
 * Tests using Cypress
+* Fix loading state for single pokemon display on paged pages
 * Add moves to details pokemon display
 * Create a cache of recently searched pokemon using localstorage and that to suggestion list
 * Add in error handling when searching for invalid pokemon - better error handling then plain message

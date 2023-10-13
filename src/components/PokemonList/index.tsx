@@ -1,4 +1,5 @@
 'use client';
+import { Suspense } from 'react';
 import SimpleDisplay from '@/components/SimpleDisplay';
 import { useRouter } from 'next/navigation';
 import Pagination from '@/components/Pagination';
@@ -22,7 +23,9 @@ export default function PokemonList({ page }: { page: number }) {
 			<>
 				<div className={'xs:grid-cols-1 grid sm:grid-cols-2 md:grid-cols-5'}>
 					{data.results.map(({ name }: { name: string }) => (
-						<SimpleDisplay pokemon={name} key={name} />
+						<Suspense fallback={<Loading />} key={name}>
+							<SimpleDisplay pokemon={name} />
+						</Suspense>
 					))}
 				</div>
 				<div className={'mt-5'}>

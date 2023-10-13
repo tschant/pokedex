@@ -86,7 +86,7 @@ export default function Pagination({
 					<Link
 						href={`/${totalPages}`}
 						className={`
-							${currentPage === totalPages ? activePageStyles : inactivePageStyles}
+							${Number(currentPage) === totalPages ? activePageStyles : inactivePageStyles}
 							mx-1
 							flex
 							h-9

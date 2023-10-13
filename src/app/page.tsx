@@ -1,6 +1,6 @@
-import PokemonSearch from '@/components/PokemonSearch';
-import PokemonList from './[slug]/PokemonList';
 import { Suspense } from 'react';
+import PokemonSearch from '@/components/PokemonSearch';
+import PokemonList from '@/components/PokemonList';
 
 export default function Home() {
 	return (

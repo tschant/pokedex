@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import PokemonList from './PokemonList';
+import PokemonList from '@/components/PokemonList';
 import PokemonSearch from '@/components/PokemonSearch';
 import Loading from '@/components/Loading';
 
