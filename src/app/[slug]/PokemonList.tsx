@@ -3,12 +3,12 @@ import SimpleDisplay from '@/components/SimpleDisplay';
 import { useRouter } from 'next/navigation';
 import Pagination from '@/components/Pagination';
 import { useGetPokemonList } from '@/utils/PokemonListAdapter';
+import Loading from '@/components/Loading';
 
 export default function PokemonList({ page }: { page: number }) {
 	const router = useRouter();
 	const pageSize: number = 25;
 	const { data } = useGetPokemonList(page, pageSize);
-
 	const totalPages =
 		data?.count && data?.count >= 0 ? Math.ceil(data?.count / pageSize) : 1;
 

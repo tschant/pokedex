@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Badge from '@/components/Badge';
 import { useGetPokemon } from '@/utils/PokemonAdapter';
 import { useGetPokemonEvolution } from '@/utils/EvolutionAdapter';
+import Loading from '../Loading';
 
 export default function DetailedDisplay({ pokemon }: { pokemon: string }) {
 	const { data } = useGetPokemon(pokemon);
@@ -14,6 +15,7 @@ export default function DetailedDisplay({ pokemon }: { pokemon: string }) {
 		(sum, { base_stat }) => sum + base_stat,
 		0,
 	);
+
 	return (
 		<div className="flex flex-col items-center justify-center">
 			{data?.sprites?.front_default && (

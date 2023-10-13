@@ -20,5 +20,6 @@ export function useGetPokemonList(page: number, pageSize: number) {
 		queryKey: ['getPokemonList', page, pageSize],
 		queryFn: () => getPokemonList({ page: page - 1, pageSize }),
 		suspense: true,
+		retry: false,
 	});
 }

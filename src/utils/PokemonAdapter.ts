@@ -11,5 +11,6 @@ export function useGetPokemon(name: string) {
 		queryKey: ['getPokemon', name],
 		queryFn: () => getPokemon({ name }),
 		suspense: true,
+		retry: false,
 	});
 }

@@ -1,8 +1,14 @@
-'use client';
-import { useRouter } from 'next/navigation';
+import PokemonSearch from '@/components/PokemonSearch';
+import PokemonList from './[slug]/PokemonList';
+import { Suspense } from 'react';
 
 export default function Home() {
-	const router = useRouter();
-	router.push('/1');
-	return;
+	return (
+		<div className="h-full">
+			<Suspense>
+				<PokemonSearch />
+				<PokemonList page={1} />
+			</Suspense>
+		</div>
+	);
 }

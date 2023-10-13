@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Pokedex 
 
-## Getting Started
+## Made With:
+* [PokeApi](https://pokeapi.co/) and the node-ts wrapper: [pokenode-ts](https://github.com/Gabb-c/pokenode-ts)
+* [NextJS](https://nextjs.org) 
+* [TailwindCSS](https://tailwindcss.com/)
+* [React-query](https://tanstack.com)
+* eslint + prettier for code standards 
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Running 
+* Clone repo 
+* Run `npm i`
+* Run `npm run dev` for dev work/modifying code 
+* or Run `npm run build` and then `npm run start`
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Working 
+* Grid view of all pokemon (paged)
+* Search of pokemon opening into a detailed view
+* history of viewed pokemon is in browser history as each pokemon is a new "page"
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## TO-DO 
+* Tests using Cypress
+* Add moves to details pokemon display
+* Create a cache of recently searched pokemon using localstorage and that to suggestion list
+* Add in error handling when searching for invalid pokemon - better error handling then plain message
+* Fix Evolution request and display
+* Limitations due to the API:
+  * Update search to be able to search other attributes 
+  * Add in ability to filter pokemon
