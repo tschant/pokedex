@@ -1,0 +1,28 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:jsx-a11y/recommended",
+    "plugin:prettier/recommended",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:tailwindcss/recommended",
+    "plugin:jsonc/recommended-with-jsonc"
+  ],
+  "rules": {
+    "indent": ["error", "tab"],
+    "quotes": ["error", "single"],
+    "prettier/prettier": [
+      "error",
+      {
+        "trailingComma": "all",
+        "useTabs": true,
+        "singleQuote": true,
+        "bracketSpacing": true
+      }
+    ]
+  }
+}
