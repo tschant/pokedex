@@ -1,7 +1,7 @@
 import { EvolutionChain, EvolutionClient } from 'pokenode-ts';
 import { useQuery } from '@tanstack/react-query';
 
-async function getEvolution({ id }: { id: number }) {
+export async function getEvolutionChain({ id }: { id: number }) {
 	const api = new EvolutionClient();
 	return (await api.getEvolutionChainById(id)) as EvolutionChain;
 }
@@ -9,7 +9,7 @@ async function getEvolution({ id }: { id: number }) {
 export function useGetPokemonEvolution(id: number) {
 	return useQuery({
 		queryKey: ['getEvolution', id],
-		queryFn: () => getEvolution({ id }),
+		queryFn: () => getEvolutionChain({ id }),
 		suspense: true,
 	});
 }

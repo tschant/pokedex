@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 import SimpleDisplay from '@/components/SimpleDisplay';
 import { useRouter } from 'next/navigation';
 import Pagination from '@/components/Pagination';
-import { useGetPokemonList } from '@/utils/PokemonListAdapter';
+import { useGetPokemonList } from '@/utils/getPokemonList';
 import Loading from '@/components/Loading';
 
 export default function PokemonList({ page }: { page: number }) {
@@ -23,7 +23,7 @@ export default function PokemonList({ page }: { page: number }) {
 			<>
 				<div className={'xs:grid-cols-1 grid sm:grid-cols-2 md:grid-cols-5'}>
 					{data.results.map(({ name }: { name: string }) => (
-						<Suspense fallback={<Loading />} key={name}>
+						<Suspense fallback={<Loading />} key={name} className="">
 							<SimpleDisplay pokemon={name} />
 						</Suspense>
 					))}

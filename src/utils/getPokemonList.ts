@@ -1,7 +1,7 @@
 import { NamedAPIResourceList, PokemonClient } from 'pokenode-ts';
 import { useQuery } from '@tanstack/react-query';
 
-async function getPokemonList({
+export async function getPokemonList({
 	page,
 	pageSize,
 }: {

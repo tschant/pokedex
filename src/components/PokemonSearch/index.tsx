@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Autosuggest from 'react-autosuggest';
-import { useGetPokemonList } from '@/utils/PokemonListAdapter';
+import { useGetPokemonList } from '@/utils/getPokemonList';
 import { NamedAPIResource } from 'pokenode-ts';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -54,7 +54,7 @@ export default function PokemonSearch({}) {
 
 	const getSuggestionValue = (suggestion: NamedAPIResource) => suggestion.name;
 	const renderSuggestion = (suggestion: NamedAPIResource) => (
-		<div className="cursor-pointer border bg-slate-100 p-3">
+		<div className="cursor-pointer border bg-slate-100 p-3 text-black">
 			{suggestion.name}
 		</div>
 	);
@@ -86,7 +86,7 @@ export default function PokemonSearch({}) {
 							}}
 							theme={{
 								container: 'm-2',
-								input: 'p-2 bg-gray-300 w-full',
+								input: 'p-2 bg-gray-300 w-full text-black',
 							}}
 						/>
 					</div>

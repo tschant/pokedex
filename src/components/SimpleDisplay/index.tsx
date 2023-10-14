@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Badge from '@/components/Badge';
 import Link from 'next/link';
-import { useGetPokemon } from '@/utils/PokemonAdapter';
+import { useGetPokemon } from '@/utils/getPokemon';
 
 export interface PokemonProps {
 	pokemon: string;

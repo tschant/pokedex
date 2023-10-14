@@ -1,9 +1,7 @@
 'use client';
 import Image from 'next/image';
 import Badge from '@/components/Badge';
-import { useGetPokemon } from '@/utils/PokemonAdapter';
-import { useGetPokemonEvolution } from '@/utils/EvolutionAdapter';
-import Loading from '../Loading';
+import { useGetPokemon } from '@/utils/getPokemon';
 
 export default function DetailedDisplay({ pokemon }: { pokemon: string }) {
 	const { data } = useGetPokemon(pokemon);
