@@ -15,8 +15,8 @@ const PaginatedPokemonList = async ({ params }: PaginatedPokemonProps) => {
 	const page = params.slug;
 
 	const queryClient = getQueryClient();
-	await queryClient.prefetchQuery(['getPokemonList', page, 25], () =>
-		getPokemonList({ page, pageSize: 25 }),
+	await queryClient.prefetchQuery(['getPokemonList', page - 1, 25], () =>
+		getPokemonList({ page: page - 1, pageSize: 25 }),
 	);
 	const dehydratedState = dehydrate(queryClient);
 

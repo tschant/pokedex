@@ -14,7 +14,7 @@ type SuggestionType = {
 	suggestion: NamedAPIResource;
 };
 
-export default function PokemonSearch({}) {
+export default function PokemonSearch() {
 	const router = useRouter();
 	const { data: tempQueryForMax } = useGetPokemonList(1, 1); // use this to get MAX pokemons
 	const { data } = useGetPokemonList(1, tempQueryForMax?.count ?? 1);
