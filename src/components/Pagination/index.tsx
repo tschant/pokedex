@@ -29,7 +29,7 @@ export default function Pagination({
 					<Link
 						href="/1"
 						className={`
-							${currentPage === 1 ? activePageStyles : inactivePageStyles}
+							${Number(currentPage) === 1 ? activePageStyles : inactivePageStyles}
 							mx-1
 							flex
 							h-9
