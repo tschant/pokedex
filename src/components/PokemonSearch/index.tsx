@@ -16,10 +16,12 @@ type SuggestionType = {
 
 export default function PokemonSearch() {
 	const router = useRouter();
-	const { data: tempQueryForMax } = useGetPokemonList(1, 1); // use this to get MAX pokemons
-	const { data } = useGetPokemonList(1, tempQueryForMax?.count ?? 1);
 	const [value, setValue] = useState<string>('');
 	const [suggestions, setSuggestions] = useState<NamedAPIResource[]>([]);
+
+	// Need to supply page + pageSize, default is first page and max 20 results
+	const { data } = useGetPokemonList(1, 10_000);
+	const pokemons = data?.results ?? [];
 
 	const onChange = (_: any, { newValue }: { newValue: string }) => {
 		setValue(newValue);
@@ -36,8 +38,8 @@ export default function PokemonSearch() {
 	const getSuggestions = (value: string): NamedAPIResource[] => {
 		const inputValue = value.trim().toLowerCase();
 		const inputLength = inputValue.length;
-		if (data?.results && inputLength > 0) {
-			return data?.results?.filter(({ name }) => {
+		if (pokemons && inputLength > 0) {
+			return pokemons?.filter(({ name }) => {
 				const trimmedName = name.toLowerCase().slice(0, inputLength);
 				return trimmedName === inputValue;
 			});
@@ -59,7 +61,7 @@ export default function PokemonSearch() {
 		</div>
 	);
 
-	if (tempQueryForMax?.count) {
+	if (pokemons.length) {
 		return (
 			<div className="mb-4 h-8">
 				<div className="fixed z-10 flex w-full bg-transparent">
