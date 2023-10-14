@@ -23,7 +23,7 @@ export default function PokemonList({ page }: { page: number }) {
 			<>
 				<div className={'xs:grid-cols-1 grid sm:grid-cols-2 md:grid-cols-5'}>
 					{data.results.map(({ name }: { name: string }) => (
-						<Suspense fallback={<Loading />} key={name} className="">
+						<Suspense fallback={<Loading />} key={name}>
 							<SimpleDisplay pokemon={name} />
 						</Suspense>
 					))}
