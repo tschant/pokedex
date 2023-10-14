@@ -23,6 +23,7 @@
 ## TO-DO 
 * Tests using Cypress
 * Add moves to details pokemon display
+* Update search for fuzzy searching -> 'gron' -> 'Aggron'
 * Create a cache of recently searched pokemon using localstorage and that to suggestion list
 * Add in error handling when searching for invalid pokemon - better error handling then plain message
 * Fix Evolution request and display
