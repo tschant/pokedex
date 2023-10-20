@@ -1,8 +1,13 @@
 'use client';
 import { useState } from 'react';
 import Autosuggest from 'react-autosuggest';
-import { useGetPokemonList } from '@/utils/getPokemonList';
-import { NamedAPIResource } from 'pokenode-ts';
+import { useSuspenseQuery } from '@apollo/experimental-nextjs-app-support/ssr';
+import { UseSuspenseQueryResult, gql } from '@apollo/client';
+import {
+	PokemonListResponse,
+	SimplePokemon,
+	query,
+} from '@/utils/getPokemonList';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -11,13 +16,25 @@ type SuggestionType = {
 	method: string;
 	suggestionIndex: number;
 	suggestionValue: string;
-	suggestion: NamedAPIResource;
+	suggestion: SimplePokemon;
 };
+
+function useGetPokemonList(
+	offset: number,
+	limit: number,
+): UseSuspenseQueryResult<PokemonListResponse> {
+	return useSuspenseQuery(query, {
+		variables: {
+			limit,
+			offset,
+		},
+	});
+}
 
 export default function PokemonSearch() {
 	const router = useRouter();
 	const [value, setValue] = useState<string>('');
-	const [suggestions, setSuggestions] = useState<NamedAPIResource[]>([]);
+	const [suggestions, setSuggestions] = useState<SimplePokemon[]>([]);
 
 	// Need to supply page + pageSize, default is first page and max 20 results
 	const { data } = useGetPokemonList(1, 10_000);
@@ -35,7 +52,7 @@ export default function PokemonSearch() {
 		setSuggestions([]);
 	};
 
-	const getSuggestions = (value: string): NamedAPIResource[] => {
+	const getSuggestions = (value: string): SimplePokemon[] => {
 		const inputValue = value.trim().toLowerCase();
 		const inputLength = inputValue.length;
 		if (pokemons && inputLength > 0) {
@@ -45,7 +62,7 @@ export default function PokemonSearch() {
 			});
 		}
 
-		return [] as NamedAPIResource[];
+		return [] as SimplePokemon[];
 	};
 
 	const onSuggestionSelected = (_: any, value: SuggestionType) => {
@@ -54,8 +71,8 @@ export default function PokemonSearch() {
 		}
 	};
 
-	const getSuggestionValue = (suggestion: NamedAPIResource) => suggestion.name;
-	const renderSuggestion = (suggestion: NamedAPIResource) => (
+	const getSuggestionValue = (suggestion: SimplePokemon) => suggestion.name;
+	const renderSuggestion = (suggestion: SimplePokemon) => (
 		<div className="cursor-pointer border bg-slate-100 p-3 text-black">
 			{suggestion.name}
 		</div>

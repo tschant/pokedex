@@ -1,17 +1,37 @@
 'use client';
-import { Suspense } from 'react';
 import SimpleDisplay from '@/components/SimpleDisplay';
 import { useRouter } from 'next/navigation';
 import Pagination from '@/components/Pagination';
-import { useGetPokemonList } from '@/utils/getPokemonList';
+
+import { useSuspenseQuery } from '@apollo/experimental-nextjs-app-support/ssr';
+import { UseSuspenseQueryResult, gql } from '@apollo/client';
 import Loading from '@/components/Loading';
+import {
+	PokemonListResponse,
+	SimplePokemon,
+	query,
+} from '@/utils/getPokemonList';
+
+function useGetPokemonList(
+	offset: number,
+	limit: number,
+): UseSuspenseQueryResult<PokemonListResponse> {
+	return useSuspenseQuery(query, {
+		variables: {
+			limit,
+			offset,
+		},
+	});
+}
 
 export default function PokemonList({ page }: { page: number }) {
 	const router = useRouter();
 	const pageSize: number = 25;
 	const { data } = useGetPokemonList(page, pageSize);
 	const totalPages =
-		data?.count && data?.count >= 0 ? Math.ceil(data?.count / pageSize) : 1;
+		data?.count?.aggregate?.count >= 0
+			? Math.ceil(data?.count?.aggregate?.count / pageSize)
+			: 1;
 
 	if (page !== 1 && page > totalPages) {
 		router.push(`/${totalPages}`);
@@ -22,10 +42,8 @@ export default function PokemonList({ page }: { page: number }) {
 		return (
 			<>
 				<div className={'xs:grid-cols-1 grid sm:grid-cols-2 md:grid-cols-5'}>
-					{data.results.map(({ name }: { name: string }) => (
-						<Suspense fallback={<Loading />} key={name}>
-							<SimpleDisplay pokemon={name} />
-						</Suspense>
+					{data.results.map((pokemon: SimplePokemon) => (
+						<SimpleDisplay pokemon={pokemon} key={pokemon.name} />
 					))}
 				</div>
 				<div className={'mt-5'}>

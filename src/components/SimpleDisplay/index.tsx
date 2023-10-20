@@ -1,18 +1,28 @@
 import Image from 'next/image';
 import Badge from '@/components/Badge';
 import Link from 'next/link';
-import { useGetPokemon } from '@/utils/getPokemon';
+import { SimplePokemon } from '@/utils/getPokemonList';
+import { useMemo } from 'react';
 
 export interface PokemonProps {
-	pokemon: string;
+	pokemon: SimplePokemon;
 }
 
 export default function SimpleDisplay({ pokemon }: PokemonProps) {
-	const { data } = useGetPokemon(pokemon);
+	const defaultSprite = useMemo(() => {
+		if (pokemon?.sprites?.length > 0 && pokemon?.sprites[0]?.sprites) {
+			const parsedSprites = JSON.parse(pokemon.sprites[0].sprites);
+			return `https://raw.githubusercontent.com/PokeAPI/sprites/master/${parsedSprites.front_default.replace(
+				'/media',
+				'',
+			)}`;
+		}
 
+		return '';
+	}, [pokemon]);
 	return (
 		<Link
-			href={`/pokemon/${data?.name}`}
+			href={`/pokemon/${pokemon?.name}`}
 			className={`
 			m-4
 			flex
@@ -28,18 +38,18 @@ export default function SimpleDisplay({ pokemon }: PokemonProps) {
 			hover:scale-110
 		`}
 		>
-			{data?.sprites?.front_default && (
+			{defaultSprite && (
 				<Image
 					width={100}
 					height={100}
-					src={data.sprites.front_default}
-					alt={data.name + ' sprite'}
+					src={defaultSprite}
+					alt={pokemon.name + ' sprite'}
 				/>
 			)}
-			<div className={'font-bold'}>N° {data?.id}</div>
-			<div className={'text-xl capitalize'}>{data?.name}</div>
+			<div className={'font-bold'}>N° {pokemon?.id}</div>
+			<div className={'text-xl capitalize'}>{pokemon?.name}</div>
 			<div>
-				{data?.types.map(({ type }, index) => (
+				{pokemon?.types.map(({ type }, index) => (
 					<Badge color={type.name} key={index}>
 						{type.name}
 					</Badge>
