@@ -2,12 +2,12 @@
 import { useState } from 'react';
 import Autosuggest from 'react-autosuggest';
 import { useSuspenseQuery } from '@apollo/experimental-nextjs-app-support/ssr';
-import { UseSuspenseQueryResult, gql } from '@apollo/client';
+import { UseSuspenseQueryResult } from '@apollo/client';
 import {
 	PokemonListResponse,
 	SimplePokemon,
-	query,
-} from '@/utils/getPokemonList';
+	pokemonListPagedQuery,
+} from '@/utils/getPokemon';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -23,10 +23,10 @@ function useGetPokemonList(
 	offset: number,
 	limit: number,
 ): UseSuspenseQueryResult<PokemonListResponse> {
-	return useSuspenseQuery(query, {
+	return useSuspenseQuery(pokemonListPagedQuery, {
 		variables: {
+			offset: offset - 1,
 			limit,
-			offset,
 		},
 	});
 }
@@ -57,8 +57,7 @@ export default function PokemonSearch() {
 		const inputLength = inputValue.length;
 		if (pokemons && inputLength > 0) {
 			return pokemons?.filter(({ name }) => {
-				const trimmedName = name.toLowerCase().slice(0, inputLength);
-				return trimmedName === inputValue;
+				return name.toLowerCase().indexOf(inputValue.toLowerCase()) >= 0;
 			});
 		}
 

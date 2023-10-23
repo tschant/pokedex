@@ -3,23 +3,17 @@ import Badge from '@/components/Badge';
 import Link from 'next/link';
 import { SimplePokemon } from '@/utils/getPokemonList';
 import { useMemo } from 'react';
+import { getDefaultPokemonSprite } from '../DetailedDisplay/getDefaultPokemonSprite';
 
 export interface PokemonProps {
 	pokemon: SimplePokemon;
 }
 
 export default function SimpleDisplay({ pokemon }: PokemonProps) {
-	const defaultSprite = useMemo(() => {
-		if (pokemon?.sprites?.length > 0 && pokemon?.sprites[0]?.sprites) {
-			const parsedSprites = JSON.parse(pokemon.sprites[0].sprites);
-			return `https://raw.githubusercontent.com/PokeAPI/sprites/master/${parsedSprites.front_default.replace(
-				'/media',
-				'',
-			)}`;
-		}
-
-		return '';
-	}, [pokemon]);
+	const defaultSprite = useMemo(
+		() => getDefaultPokemonSprite(pokemon.sprites),
+		[pokemon],
+	);
 	return (
 		<Link
 			href={`/pokemon/${pokemon?.name}`}

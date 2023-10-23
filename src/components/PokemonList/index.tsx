@@ -5,21 +5,20 @@ import Pagination from '@/components/Pagination';
 
 import { useSuspenseQuery } from '@apollo/experimental-nextjs-app-support/ssr';
 import { UseSuspenseQueryResult, gql } from '@apollo/client';
-import Loading from '@/components/Loading';
 import {
 	PokemonListResponse,
 	SimplePokemon,
-	query,
-} from '@/utils/getPokemonList';
+	pokemonListPagedQuery,
+} from '@/utils/getPokemon';
 
 function useGetPokemonList(
 	offset: number,
 	limit: number,
 ): UseSuspenseQueryResult<PokemonListResponse> {
-	return useSuspenseQuery(query, {
+	return useSuspenseQuery(pokemonListPagedQuery, {
 		variables: {
+			offset: (offset - 1) * limit,
 			limit,
-			offset,
 		},
 	});
 }

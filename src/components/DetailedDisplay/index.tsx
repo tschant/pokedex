@@ -1,33 +1,67 @@
 'use client';
 import Image from 'next/image';
+import { useSuspenseQuery } from '@apollo/experimental-nextjs-app-support/ssr';
+import { UseSuspenseQueryResult } from '@apollo/client';
 import Badge from '@/components/Badge';
-import { useGetPokemon } from '@/utils/getPokemon';
+import {
+	SingleDetailedPokemonResponse,
+	singleDetailedPokemonQuery,
+} from '@/utils/getPokemon';
+import { useMemo } from 'react';
+import { EvolutionDisplay } from './EvolutionDisplay';
+import { getDefaultPokemonSprite } from './getDefaultPokemonSprite';
 
-export default function DetailedDisplay({ pokemon }: { pokemon: string }) {
-	const { data } = useGetPokemon(pokemon);
-	/* TODO: This is more than take pokemon id and get evolution
-		 Need to get pokemon-species -> evolution-chain(url has id)
-		// const { data: evolution } = useGetPokemonEvolution(data?.id ?? 0);
-	*/
-	const totalStats = data?.stats?.reduce(
-		(sum, { base_stat }) => sum + base_stat,
+function useGetDetailedPokemon(
+	name: string,
+): UseSuspenseQueryResult<SingleDetailedPokemonResponse> {
+	return useSuspenseQuery(singleDetailedPokemonQuery, {
+		variables: {
+			name,
+		},
+	});
+}
+
+export default function DetailedDisplay({
+	pokemonName,
+}: {
+	pokemonName: string;
+}) {
+	const { data } = useGetDetailedPokemon(pokemonName);
+	const defaultSprite = useMemo(() => {
+		if (data?.results?.length) {
+			const pokemon = data.results[0].pokemons[0];
+			return getDefaultPokemonSprite(pokemon?.sprites);
+		}
+
+		return '';
+	}, [data]);
+
+	if (!data?.results?.length) {
+		return <div>Not Found</div>;
+	}
+
+	const pokemon = data.results[0];
+	const pokemonDetails = pokemon.pokemons[0];
+	const pokemonEvolutionChain = pokemon.evolutionChain;
+	const totalStats = pokemon?.pokemons[0]?.stats?.reduce(
+		(sum, { baseStat }) => sum + baseStat,
 		0,
 	);
 
 	return (
 		<div className="flex flex-col items-center justify-center">
-			{data?.sprites?.front_default && (
+			{defaultSprite && (
 				<Image
 					width={100}
 					height={100}
-					src={data.sprites.front_default}
-					alt={data.name + ' sprite'}
+					src={defaultSprite}
+					alt={pokemon.name + ' sprite'}
 				/>
 			)}
-			<div className={'font-bold'}>N° {data?.id}</div>
-			<div className={'text-xl font-bold capitalize'}>{data?.name}</div>
+			<div className={'font-bold'}>N° {pokemon?.id}</div>
+			<div className={'text-xl font-bold capitalize'}>{pokemon?.name}</div>
 			<div>
-				{data?.types.map(({ type }, index) => (
+				{pokemonDetails.types.map(({ type }, index) => (
 					<Badge color={type.name} key={index} size="lg">
 						{type.name}
 					</Badge>
@@ -38,19 +72,23 @@ export default function DetailedDisplay({ pokemon }: { pokemon: string }) {
 				<div className="mx-2 text-center">
 					<div className="text-xl font-bold">Height</div>
 					<Badge color="default" className="w-48" size="lg">
-						<span>{data?.height ? data?.height / 10 : 0}m</span>
+						<span>
+							{pokemonDetails?.height ? pokemonDetails?.height / 10 : 0}m
+						</span>
 					</Badge>
 				</div>
 				<div className="mx-2 text-center">
 					<div className="text-xl font-bold">Weight</div>
 					<Badge color="default" className="w-48" size="lg">
-						<span>{data?.weight ? data?.weight / 10 : 0}kg</span>
+						<span>
+							{pokemonDetails?.weight ? pokemonDetails?.weight / 10 : 0}kg
+						</span>
 					</Badge>
 				</div>
 			</div>
 			<div className="my-4 text-center">
 				<div className="text-xl font-bold">Abilities</div>
-				{data?.abilities?.map(({ ability }) => (
+				{pokemonDetails?.abilities?.map(({ ability }) => (
 					<Badge
 						color="default"
 						key={ability.name}
@@ -68,14 +106,20 @@ export default function DetailedDisplay({ pokemon }: { pokemon: string }) {
 					{totalStats}
 				</div>
 				<div className="grid grid-cols-2">
-					{data?.stats?.map(({ base_stat, stat }) => (
+					{pokemonDetails?.stats?.map(({ baseStat, stat }) => (
 						<div className="mx-4 text-left" key={stat.name}>
 							<span className="font-bold capitalize">{stat.name}: </span>
-							{base_stat}
+							{baseStat}
 						</div>
 					))}
 				</div>
 			</div>
+			{pokemonEvolutionChain.species.length > 1 && (
+				<div className="my-4 text-center">
+					<div className="text-xl font-bold">Evolutions</div>
+					<EvolutionDisplay pokemonEvolutionChain={pokemonEvolutionChain} />
+				</div>
+			)}
 		</div>
 	);
 }

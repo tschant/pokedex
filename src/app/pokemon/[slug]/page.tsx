@@ -12,7 +12,7 @@ const SinglePokemonDisplay = async ({ params }: SinglePokemonDisplayProps) => {
 	const pokemonName = params.slug;
 
 	return (
-		<div className="h-full">
+		<div className="h-full min-h-screen">
 			<Suspense fallback={<Loading />}>
 				<PokemonSearch />
 				<ErrorBoundary
@@ -22,7 +22,7 @@ const SinglePokemonDisplay = async ({ params }: SinglePokemonDisplayProps) => {
 						</div>
 					}
 				>
-					{/* <DetailedDisplay pokemon={pokemonName} /> */}
+					<DetailedDisplay pokemonName={pokemonName} />
 				</ErrorBoundary>
 			</Suspense>
 		</div>

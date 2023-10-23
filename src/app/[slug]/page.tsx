@@ -11,7 +11,7 @@ const PaginatedPokemonList = async ({ params }: PaginatedPokemonProps) => {
 	const page = params.slug;
 
 	return (
-		<div className="h-full">
+		<div className="h-full min-h-screen">
 			<Suspense fallback={<Loading className="h-screen" />}>
 				<PokemonSearch />
 				<PokemonList page={page > 0 ? page : 1} />
