@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 // lib/apollo-provider.js
 'use client';
 

@@ -25,7 +25,7 @@ function useGetPokemonList(
 
 export default function PokemonList({ page }: { page: number }) {
 	const router = useRouter();
-	const pageSize: number = 25;
+	const pageSize = 25;
 	const { data } = useGetPokemonList(page, pageSize);
 	const totalPages =
 		data?.count?.aggregate?.count >= 0

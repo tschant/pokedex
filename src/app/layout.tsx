@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
 import { ApolloWrapper } from '@/utils/apollo-provider';
+import { PokemonHistoryProvider } from '@/utils/pokemonHistoryProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,7 +20,9 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={inter.className}>
-				<ApolloWrapper>{children}</ApolloWrapper>
+				<ApolloWrapper>
+					<PokemonHistoryProvider>{children}</PokemonHistoryProvider>
+				</ApolloWrapper>
 			</body>
 		</html>
 	);

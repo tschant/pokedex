@@ -1,21 +1,25 @@
 import Image from 'next/image';
 import Badge from '@/components/Badge';
 import Link from 'next/link';
-import { SimplePokemon } from '@/utils/getPokemonList';
-import { useMemo } from 'react';
+import { SimplePokemon } from '@/utils/getPokemon';
+import { useContext, useMemo } from 'react';
 import { getDefaultPokemonSprite } from '../DetailedDisplay/getDefaultPokemonSprite';
+import { PokemonHistoryContext } from '@/utils/pokemonHistoryProvider';
 
 export interface PokemonProps {
 	pokemon: SimplePokemon;
 }
 
 export default function SimpleDisplay({ pokemon }: PokemonProps) {
+	const { updateHistory } = useContext(PokemonHistoryContext);
 	const defaultSprite = useMemo(
 		() => getDefaultPokemonSprite(pokemon.sprites),
 		[pokemon],
 	);
+
 	return (
 		<Link
+			onClick={() => updateHistory(pokemon)}
 			href={`/pokemon/${pokemon?.name}`}
 			className={`
 			m-4

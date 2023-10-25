@@ -36,17 +36,21 @@ export default function DetailedDisplay({
 		return '';
 	}, [data]);
 
-	if (!data?.results?.length) {
+	const pokemon = data?.results[0];
+	const pokemonDetails = pokemon?.pokemons[0];
+	const pokemonEvolutionChain = pokemon?.evolutionChain;
+	const totalStats = useMemo(
+		() =>
+			pokemon?.pokemons[0]?.stats?.reduce(
+				(sum, { baseStat }) => sum + baseStat,
+				0,
+			),
+		[pokemon],
+	);
+
+	if (!pokemon) {
 		return <div>Not Found</div>;
 	}
-
-	const pokemon = data.results[0];
-	const pokemonDetails = pokemon.pokemons[0];
-	const pokemonEvolutionChain = pokemon.evolutionChain;
-	const totalStats = pokemon?.pokemons[0]?.stats?.reduce(
-		(sum, { baseStat }) => sum + baseStat,
-		0,
-	);
 
 	return (
 		<div className="flex flex-col items-center justify-center">
