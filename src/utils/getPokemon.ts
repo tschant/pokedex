@@ -36,7 +36,11 @@ export interface PokemonType {
 
 export interface PokemonSprite {
 	id: number;
-	sprites: string;
+	sprites:
+		| string
+		| {
+				front_default: string;
+		  };
 }
 
 export interface PokemonAbility {
